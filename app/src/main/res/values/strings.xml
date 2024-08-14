@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">smstoexcel</string>
+
+
+
+    <string name="st_calender">시작일</string>
+    <string name="ed_calender">종료일</string>
+    <string name="save_sms">Excel로 저장하기</string>
+</resources>

@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainFragment">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.namgs.smstoexcel.viewmodel.ShardViewModel" />
+
+        <variable
+            name="mainFragment"
+            type="com.namgs.smstoexcel.ui.MainFragment" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@id/buttonSaveSMS"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:paddingTop="5dp">
+
+                <LinearLayout
+                    android:id="@+id/stview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="10dp">
+
+                    <LinearLayout
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/st_calender"
+                            android:textSize="20dp" />
+
+                        <ImageView
+                            android:id="@+id/stcalimg"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            app:srcCompat="@drawable/test_calender" />
+
+
+                    </LinearLayout>
+
+                    <View style="@style/horisenLineDot5333333" />
+
+                    <TextView
+                        android:id="@+id/stday_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="0000-00-00"
+                        android:textSize="20dp" />
+
+
+                </LinearLayout>
+
+
+                <View style="@style/LineDot5333333" />
+
+                <LinearLayout
+                    android:id="@+id/edview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="10dp">
+
+                    <LinearLayout
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/ed_calender"
+                            android:textSize="20dp" />
+
+                        <ImageView
+                            android:id="@+id/edcalimg"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            app:srcCompat="@drawable/test2_calender_end" />
+                    </LinearLayout>
+
+                    <View style="@style/horisenLineDot5333333" />
+
+                    <TextView
+                        android:id="@+id/edday_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="0000-00-00"
+                        android:textSize="20dp" />
+
+                </LinearLayout>
+
+                <View style="@style/LineDot5333333" />
+
+
+                <RadioGroup
+                    android:id="@+id/message_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="메시지 타입"
+                        android:textSize="20dp" />
+
+                    <RadioButton
+                        android:id="@+id/SHOW_ALL"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:checked="true"
+                        android:gravity="center"
+                        android:text="ALL"
+                        android:textSize="20dp" />
+
+                    <RadioButton
+                        android:id="@+id/input_message"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="수신"
+                        android:textSize="20dp" />
+
+                    <RadioButton
+                        android:id="@+id/output_message"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="발신"
+                        android:textSize="20dp" />
+                </RadioGroup>
+
+                <View style="@style/LineDot5333333" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewSMS"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="5dp" />
+            </LinearLayout>
+
+
+
+
+        <Button
+            android:id="@+id/buttonSaveSMS"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:textSize="20dp"
+            android:text="@string/save_sms" />
+    </RelativeLayout>
+
+
+</layout>
