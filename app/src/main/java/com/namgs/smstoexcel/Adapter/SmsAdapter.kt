@@ -1,5 +1,6 @@
 /*
 package com.namgs.smstoexcel.Adapter
+import android.telephony.SmsMessage
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -9,8 +10,8 @@ class SmsAdapter(private val messages: List<SmsMessage>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
-        private const val VIEW_TYPE_SENT = 1
-        private const val VIEW_TYPE_RECEIVED = 2
+        private const val VIEW_TYPE_SENT1 = 1
+        private const val VIEW_TYPE_RECEIVED1 = 2
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -53,4 +54,5 @@ class SmsAdapter(private val messages: List<SmsMessage>) :
             binding.executePendingBindings()
         }
     }
-}*/
+}
+*/

@@ -4,26 +4,14 @@ package com.namgs.smstoexcel
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import com.namgs.Utill
-import com.namgs.smstoexcel.data.loadsms
 import com.namgs.smstoexcel.viewmodel.ShardViewModel
-import com.namgs.smstoexcel.vo.SmsDataLong
+
 
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
@@ -48,7 +36,9 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+
         val navController = navHostFragment.navController // 네비게이션 컨트롤러
+
         appBarConfiguration = AppBarConfiguration(navController.graph) // 뒤로가기 버튼 선택시 이전 프래그먼트 이동
      //   setupActionBarWithNavController(navController, appBarConfiguration)
 

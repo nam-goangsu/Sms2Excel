@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.namgs.smstoexcel.data.loadsms
+import com.namgs.smstoexcel.vo.SmsDataList_1
 import com.namgs.smstoexcel.vo.SmsDataLong
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,8 +28,8 @@ class ShardViewModel: ViewModel() {
 
      // TODO: Implement the ViewModel
 
-     private var _defaltdata = MutableLiveData<List<SmsDataLong>>()
-     val defaltdata : LiveData<List<SmsDataLong>> = _defaltdata
+     private var _defaltdata = MutableLiveData<List<SmsDataList_1>>()
+     val defaltdata : LiveData<List<SmsDataList_1>> = _defaltdata
 
 
 

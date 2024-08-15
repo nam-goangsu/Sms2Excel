@@ -11,8 +11,13 @@ import com.namgs.smstoexcel.vo.SmsDataLong
 class loadsms(private val context: Context) {
 
 
-    fun getloadSms(stdate: Long, eddate: Long, messageType: Int): List<SmsDataLong> {
+    fun getloadSms(stdate: Long, eddate: Long, messageType: Int): List<SmsDataList_1> {
         val smsList = mutableListOf<SmsDataLong>()
+        var list: MutableList<SmsDataList_1> = mutableListOf()
+        smsList.clear()
+        list.clear()
+
+
         smsList.clear()
         val projection = arrayOf(
             Telephony.Sms._ID,
@@ -72,7 +77,7 @@ class loadsms(private val context: Context) {
 
 
             val test2head = grouplist.keys.toMutableList()
-            var list: MutableList<SmsDataList_1> = mutableListOf()
+
             var listinside : SmsDataList_1
 
             var addresscheck: String = ""
@@ -83,20 +88,20 @@ class loadsms(private val context: Context) {
                 var list_child =grouplist.values.toList()[index]
                 list_child.forEachIndexed { index, s ->
 
-                   if (addresscheck.equals("")) {
-                        viewtype =0; addr = key; date=0L; body=""; smstype=-1; expand = false
+                   if (addresscheck.equals("") || !addresscheck.equals(s.address)) {
+                        viewtype =-1; addr = key; date=0L; body=""; smstype=-1; expand = false
                         listinside=SmsDataList_1(viewtype,addr,date,body,smstype,expand)
                         list.add(listinside)
 
-                        viewtype =1; addr = key; date=s.date; body=s.body; smstype=s.type; expand = false
+                        viewtype =0; addr = key; date=s.date; body=s.body; smstype=s.type; expand = false
                         addresscheck = key
                     }
                     else if (addresscheck.equals(key)) {
-                       viewtype =1; addr = key; date=s.date; body=s.body; smstype=s.type; expand = false
+                       viewtype =0; addr = key; date=s.date; body=s.body; smstype=s.type; expand = false
 
                     }
                     else {
-                       viewtype =1; addr = key; date=s.date; body=s.body; smstype=s.type; expand = false
+                       viewtype =0; addr = key; date=s.date; body=s.body; smstype=s.type; expand = false
                         addresscheck = ""
                     }
 
@@ -106,7 +111,7 @@ class loadsms(private val context: Context) {
                 }
             }
         }  /// return 데이터 형식 변경 및 recyclerview 어댑터 수정 viewtype에 따라 레이아웃 변경 되는 smsadapter 형식으로20240815
-
-        return smsList
+        return list
+        //return smsList
     }
 }
