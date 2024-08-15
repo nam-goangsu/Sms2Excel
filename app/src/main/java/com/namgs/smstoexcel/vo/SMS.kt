@@ -33,13 +33,19 @@ enum class messageType (val type : Int){
     outputmessage(Telephony.Sms.MESSAGE_TYPE_SENT)
 }
 
-data class SmsData(val address: String, val body: String, val date: String)
 
 data class SmsDataLong(val address: String, val body: String, val date: Long , val type : Int)
 
-data class SmsData1(val address: String, val body: String, val date: String)
 
-data class selectSMS(val address: String, val date: String, val body: String)
+data class SmsDataList_1(
+    val viewtype : Int,
+    val address: String,
+    val date: Long,
+    val body: String,
+    val smstype : Int,
+    val expand : Boolean
+)
+
 
 
 data class selectSMS2(

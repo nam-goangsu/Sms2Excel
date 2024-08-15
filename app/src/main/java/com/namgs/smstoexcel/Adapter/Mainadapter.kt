@@ -27,7 +27,7 @@ class Mainadapter(
     }
 
     override fun onBindViewHolder(holder: SmsViewHolder, position: Int) {
-        val message = smslist[position]
+       val message = smslist[position]
 
 
         holder.bind(message)

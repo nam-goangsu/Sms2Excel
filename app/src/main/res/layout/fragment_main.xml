@@ -36,7 +36,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingBottom="10dp">
+                    android:paddingBottom="10dp"
+                    android:onClick="@{() -> mainFragment.stviewclick()}"
+                    >
 
                     <LinearLayout
 
@@ -75,7 +77,7 @@
                         android:layout_gravity="center"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="0000-00-00"
+                        android:text="@{viewModel.stDate}"
                         android:textSize="20dp" />
 
 
@@ -89,7 +91,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingBottom="10dp">
+                    android:paddingBottom="10dp"
+                    android:onClick="@{() -> mainFragment.edviewclick()}"
+                    >
 
                     <LinearLayout
 
@@ -126,7 +130,7 @@
                         android:layout_gravity="center"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="0000-00-00"
+                        android:text="@{viewModel.selectedDate}"
                         android:textSize="20dp" />
 
                 </LinearLayout>

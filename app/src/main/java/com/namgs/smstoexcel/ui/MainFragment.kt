@@ -23,7 +23,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-class MainFragment : Fragment(), View.OnClickListener {
+class MainFragment : Fragment() {
 
     companion object {
     //    fun newInstance() = MainFragment()
@@ -93,7 +93,7 @@ class MainFragment : Fragment(), View.OnClickListener {
 
 
         shviewModel.stDate.observe(viewLifecycleOwner, Observer { date ->   // 시작일
-            binding!!.stdayTextview.text = date
+          //  binding!!.stdayTextview.text = date
             startDate = dateFormat.parse(date)?.time ?: 0L
         })
         shviewModel.selectedDate.observe(viewLifecycleOwner, Observer { date -> /// 종료일
@@ -106,8 +106,8 @@ class MainFragment : Fragment(), View.OnClickListener {
         })
 
 
-        binding!!.stview.setOnClickListener(this)
-        binding!!.edview.setOnClickListener(this)
+     //   binding!!.stview.setOnClickListener(this)
+        //binding!!.edview.setOnClickListener(this)
         binding!!.messageGroup.setOnCheckedChangeListener{group,checkedid->
             when(checkedid){
                 R.id.SHOW_ALL->{shviewModel.setMessageType(0)
@@ -132,41 +132,41 @@ class MainFragment : Fragment(), View.OnClickListener {
         binding = null
     }
 
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            R.id.stview -> {
-                val test =Utill().getMillisto_Calendar(startDate)
-                DatePickerDialog(
-                    requireContext(),
-                    { _, selectedYear, selectedMonth, selectedDay ->
+    fun stviewclick(){
+        val test =Utill().getMillisto_Calendar(startDate)
+        DatePickerDialog(
+            requireContext(),
+            { _, selectedYear, selectedMonth, selectedDay ->
 
-                        shviewModel.setDate(selectedYear, selectedMonth, selectedDay)
-                        shviewModel.loadSmsMessages(loadsms(activity),startDate,endDate,messagetype)
-                        adapter .notifyDataSetChanged()
-                    },
+                shviewModel.setDate(selectedYear, selectedMonth, selectedDay)
+                shviewModel.loadSmsMessages(loadsms(activity),startDate,endDate,messagetype)
+                adapter .notifyDataSetChanged()
+            },
 
-                    test.first, test.second-1,test.third
-                ).apply {
-                    datePicker.maxDate = endDate
-                }.show()
-            }
-            R.id.edview -> {
-                val test2 =Utill().getMillisto_Calendar(endDate)
-                DatePickerDialog(
-                    requireContext(),
-                    { _, selectedYear, selectedMonth, selectedDay ->
-                        shviewModel.setDate1(selectedYear, selectedMonth, selectedDay)
-                        shviewModel.loadSmsMessages(loadsms(activity),startDate,endDate,messagetype)
-                        adapter .notifyDataSetChanged()
-                    },
-                    test2.first, test2.second-1, test2.third
-                ).apply {
-                    datePicker.minDate = startDate
-                datePicker.maxDate = System.currentTimeMillis()
-                }.show()
-            }
-        }
+            test.first, test.second-1,test.third
+        ).apply {
+            datePicker.maxDate = endDate
+        }.show()
     }
+
+    fun edviewclick(){
+
+            val test2 =Utill().getMillisto_Calendar(endDate)
+            DatePickerDialog(
+                requireContext(),
+                { _, selectedYear, selectedMonth, selectedDay ->
+                    shviewModel.setDate1(selectedYear, selectedMonth, selectedDay)
+                    shviewModel.loadSmsMessages(loadsms(activity),startDate,endDate,messagetype)
+                    adapter .notifyDataSetChanged()
+                },
+                test2.first, test2.second-1, test2.third
+            ).apply {
+                datePicker.minDate = startDate
+                datePicker.maxDate = System.currentTimeMillis()
+            }.show()
+    }
+
+
 }
 
 

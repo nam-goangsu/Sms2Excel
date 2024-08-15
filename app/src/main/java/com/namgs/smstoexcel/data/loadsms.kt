@@ -3,20 +3,10 @@ package com.namgs.smstoexcel.data
 import android.content.Context
 import android.database.Cursor
 import android.provider.Telephony
-import android.util.Log
-import androidx.lifecycle.LiveData
-import com.namgs.Utill
-import com.namgs.smstoexcel.vo.RowType
-import java.time.Instant
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
-import com.namgs.smstoexcel.vo.SMS
-import com.namgs.smstoexcel.vo.SMSParent
-import com.namgs.smstoexcel.vo.SmsData
-import com.namgs.smstoexcel.vo.SmsData1
+
+import com.namgs.smstoexcel.vo.SmsDataList_1
 import com.namgs.smstoexcel.vo.SmsDataLong
-import com.namgs.smstoexcel.vo.messageType
-import com.namgs.smstoexcel.vo.selectSMS2
+
 
 class loadsms(private val context: Context) {
 
@@ -56,7 +46,6 @@ class loadsms(private val context: Context) {
                     val type = cursor.getColumnIndex("type")    // 내용
                     val type2 = cursor.getInt(type)
 
-
                     if (type2 == messageType) {
 
                         if (address.length >= 10 && address.length < 12 && subaddres.equals("010")) {
@@ -64,21 +53,59 @@ class loadsms(private val context: Context) {
                             val bodyIdx = cursor.getColumnIndex("body")    // 내용
                             val body = cursor.getString(bodyIdx)
                             val date = cursor.getLong(dateIdx)
-                            smsList.add(SmsDataLong(address, body, date, messageType))
+                            smsList.add(SmsDataLong(address, body, date, type2))
                         }
-                    }else if(messageType == 0 ){
+                    } else if (messageType == 0) {
                         if (address.length >= 10 && address.length < 12 && subaddres.equals("010")) {
 
                             val bodyIdx = cursor.getColumnIndex("body")    // 내용
                             val body = cursor.getString(bodyIdx)
                             val date = cursor.getLong(dateIdx)
-                            smsList.add(SmsDataLong(address, body, date, messageType))
+                            smsList.add(SmsDataLong(address, body, date, type2))
                         }
                     }
                 }
             }
+            ////////////
 
-        }
+            val grouplist = smsList.groupBy { it.address }
+
+
+            val test2head = grouplist.keys.toMutableList()
+            var list: MutableList<SmsDataList_1> = mutableListOf()
+            var listinside : SmsDataList_1
+
+            var addresscheck: String = ""
+            var viewtype :Int= 0; var addr :String =""; var date:Long=0L; var body : String ="";var expand : Boolean =false;var smstype : Int =0
+
+            test2head.forEachIndexed { index, s ->
+                var key = s
+                var list_child =grouplist.values.toList()[index]
+                list_child.forEachIndexed { index, s ->
+
+                   if (addresscheck.equals("")) {
+                        viewtype =0; addr = key; date=0L; body=""; smstype=-1; expand = false
+                        listinside=SmsDataList_1(viewtype,addr,date,body,smstype,expand)
+                        list.add(listinside)
+
+                        viewtype =1; addr = key; date=s.date; body=s.body; smstype=s.type; expand = false
+                        addresscheck = key
+                    }
+                    else if (addresscheck.equals(key)) {
+                       viewtype =1; addr = key; date=s.date; body=s.body; smstype=s.type; expand = false
+
+                    }
+                    else {
+                       viewtype =1; addr = key; date=s.date; body=s.body; smstype=s.type; expand = false
+                        addresscheck = ""
+                    }
+
+                    listinside=SmsDataList_1(viewtype,addr,date,body,smstype,expand)
+                    list.add(listinside)
+
+                }
+            }
+        }  /// return 데이터 형식 변경 및 recyclerview 어댑터 수정 viewtype에 따라 레이아웃 변경 되는 smsadapter 형식으로20240815
 
         return smsList
     }

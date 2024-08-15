@@ -19,7 +19,7 @@ class ShardViewModel: ViewModel() {
 
 
      private val _stMessageint = MutableLiveData<Int>()
-     val stMessageint: LiveData<Int> get() = _stMessageint
+     val stMessageint: LiveData<Int>  = _stMessageint
 
      fun setMessageType(radio : Int){
           _stMessageint.value = radio
@@ -28,7 +28,7 @@ class ShardViewModel: ViewModel() {
      // TODO: Implement the ViewModel
 
      private var _defaltdata = MutableLiveData<List<SmsDataLong>>()
-     val defaltdata : LiveData<List<SmsDataLong>> get() = _defaltdata
+     val defaltdata : LiveData<List<SmsDataLong>> = _defaltdata
 
 
 
@@ -42,10 +42,10 @@ class ShardViewModel: ViewModel() {
 
 
      private val _selectedDate = MutableLiveData<String>()
-     val selectedDate: LiveData<String> get() = _selectedDate
+     val selectedDate: LiveData<String> = _selectedDate
 
      private val _stDate = MutableLiveData<String>()
-     val stDate: LiveData<String> get() = _stDate
+     val stDate: LiveData<String>  = _stDate
 
      init {
           // ViewModel 초기화 시 오늘 날짜로 설정
