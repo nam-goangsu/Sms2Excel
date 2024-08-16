@@ -33,31 +33,32 @@
             android:paddingStart="5dp"
             android:paddingEnd="15dp">
 
-            <TextView
-                android:id="@+id/input_timestamp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:gravity="center_vertical"
-                android:minHeight="25dp"
-                android:paddingStart="5dp"
-                android:text="Time Line"
-                android:textSize="15dp"
-                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/input_body"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:gravity="center_vertical"
+                android:gravity="right|center_vertical"
                 android:minHeight="25dp"
                 android:paddingStart="20dp"
                 android:paddingTop="3dp"
                 android:paddingEnd="5dp"
                 android:paddingBottom="3dp"
                 android:text="body "
-                android:textSize="15dp" />
+                android:textSize="20dp" />
+            <TextView
+                android:id="@+id/input_timestamp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="right|center_vertical"
+                android:minHeight="25dp"
+                android:paddingStart="5dp"
+                android:text="Time Line"
+                android:textSize="10dp"
+                android:textStyle="bold" />
+
 
         </LinearLayout>
 

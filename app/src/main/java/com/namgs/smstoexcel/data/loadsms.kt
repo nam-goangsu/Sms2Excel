@@ -73,9 +73,8 @@ class loadsms(private val context: Context) {
             }
             ////////////
 
-            val grouplist = smsList.groupBy { it.address }
 
-
+            val grouplist = smsList.groupBy { it.address } //[key,map]으로 key 전화번호 map 문자 메시지 정보
             val test2head = grouplist.keys.toMutableList()
 
             var listinside : SmsDataList_1

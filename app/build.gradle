@@ -40,7 +40,10 @@ android {
 }
 
 dependencies {
-
+    //noinspection UseTomlInstead
+    implementation 'org.apache.poi:poi:5.3.0'
+    //noinspection UseTomlInstead
+    implementation 'org.apache.poi:poi-ooxml:5.3.0'
     implementation libs.androidx.core.ktx
     implementation libs.androidx.appcompat
     implementation libs.material

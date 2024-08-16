@@ -3,11 +3,9 @@ package com.namgs.smstoexcel.vo
 import android.provider.Telephony
 
 data class SMS(
-    val tyepo: RowType,
     val address: String,
     val date: String,
     val body: String,
-    var checkbox1: Boolean = false
 )
 
 data class SMSParent(
@@ -47,6 +45,10 @@ data class SmsDataList_1(
 )
 
 
+data class ItemData(
+    var itemText: String,
+    var isChecked: Boolean = false
+)
 
 data class selectSMS2(
     val addresskey: String,

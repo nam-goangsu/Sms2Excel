@@ -26,7 +26,8 @@ class ShardViewModel: ViewModel() {
           _stMessageint.value = radio
      }
 
-     // TODO: Implement the ViewModel
+
+
 
      private var _defaltdata = MutableLiveData<List<SmsDataList_1>>()
      val defaltdata : LiveData<List<SmsDataList_1>> = _defaltdata

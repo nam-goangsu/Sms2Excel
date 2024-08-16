@@ -5,10 +5,12 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -19,9 +21,15 @@ import com.namgs.smstoexcel.R
 import com.namgs.smstoexcel.data.loadsms
 import com.namgs.smstoexcel.databinding.FragmentMainBinding
 import com.namgs.smstoexcel.viewmodel.ShardViewModel
+import com.namgs.smstoexcel.vo.SMS
+import com.namgs.smstoexcel.vo.SmsDataList_1
+import java.io.File
+import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
 
 class MainFragment : Fragment() {
 
@@ -34,8 +42,7 @@ class MainFragment : Fragment() {
     private lateinit var activity : Context
     private lateinit var adapter :Mainadapter
 
-
-
+    private val selectedSMS = mutableListOf<SmsDataList_1>()
     val calendar : Calendar = Calendar.getInstance()
     val year = calendar.get(Calendar.YEAR)
     val month = calendar.get(Calendar.MONTH)
@@ -71,7 +78,6 @@ class MainFragment : Fragment() {
             mainFragment = this@MainFragment
         }
 
-
         startDate =Utill().convertToMillis(year,month+1,1)
         endDate =Utill().convertToMillis(year,month+1,day)
 
@@ -85,7 +91,7 @@ class MainFragment : Fragment() {
             binding!!.recyclerViewSMS.layoutManager = LinearLayoutManager(activity)
 
 
-            adapter  = Mainadapter(messages )
+            adapter  = Mainadapter(messages,selectedSMS )
             binding!!.recyclerViewSMS.adapter = adapter
             adapter .notifyDataSetChanged()
             Log.d("test","size ${messages .size}")
@@ -166,6 +172,44 @@ class MainFragment : Fragment() {
             }.show()
     }
 
+
+
+    fun saveSelectedSmsToExcel() {
+        val workbook = XSSFWorkbook()
+        val timestamp = SimpleDateFormat("yyMMddHHmmss", Locale.getDefault()).format(Date())
+        val fileName = "sms_$timestamp.xlsx"
+        val sheet = workbook.createSheet("$timestamp SMS")
+
+
+        Toast.makeText(activity, "저장을 시작 합니다. 잠시만 기달리세요.", Toast.LENGTH_SHORT).show()
+
+        val header = sheet.createRow(0)
+        header.createCell(1).setCellValue("날짜")
+        header.createCell(0).setCellValue("번호")
+        header.createCell(2).setCellValue("내용")
+
+
+        selectedSMS.forEachIndexed { index, sms ->
+            val row = sheet.createRow(index + 1)
+            row.createCell(1).setCellValue(Utill().mill2Format(sms.date))
+            row.createCell(0).setCellValue(sms.address)
+            row.createCell(2).setCellValue(sms.body)
+        }
+
+
+        val smsDir =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).path
+
+
+        val filePath = File(smsDir, fileName)
+        FileOutputStream(filePath).use { fileOut ->
+            workbook.write(fileOut)
+        }
+
+
+        workbook.close()
+        Toast.makeText(activity, "엑셀 저장 완료 저장 위치는 Documents, 파일명은 ${fileName}", Toast.LENGTH_SHORT).show()
+    }
 
 }
 

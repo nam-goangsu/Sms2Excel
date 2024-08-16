@@ -6,6 +6,7 @@
     tools:context=".MainFragment">
 
     <data>
+        <import type="android.view.View" />
 
         <variable
             name="viewModel"
@@ -186,11 +187,27 @@
 
                 <View style="@style/LineDot5333333" />
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="5dp" >
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerViewSMS"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:scrollbars="vertical"
+                    android:scrollbarFadeDuration="1"
+                    android:visibility="@{viewModel.defaltdata.size() >0 ? View.VISIBLE : View.GONE, default = gone}"
+                    android:paddingEnd="10dp"
                     android:padding="5dp" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:visibility="@{viewModel.defaltdata.size() >0 ? View.GONE : View.VISIBLE, default = visible}"
+                        android:text="@string/nomorelist"/>
+                </RelativeLayout>
             </LinearLayout>
 
 
@@ -204,8 +221,14 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="10dp"
             android:textSize="20dp"
+            android:onClick="@{() -> mainFragment.saveSelectedSmsToExcel()}"
             android:text="@string/save_sms" />
     </RelativeLayout>
 
 
 </layout>
+
+
+<!--
+recyclerview 없으면 보이도록 설정
+android:visibility="@{inOutList.size() > 0 ? View.VISIBLE : View.GONE, default = gone}"-->
