@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
@@ -11,18 +12,29 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.namgs.Utill
 import com.namgs.smstoexcel.Adapter.Mainadapter
+import com.namgs.smstoexcel.MainActivity
+import com.namgs.smstoexcel.MainActivity.Companion.arrPermission
 import com.namgs.smstoexcel.R
 import com.namgs.smstoexcel.data.loadsms
 import com.namgs.smstoexcel.databinding.FragmentMainBinding
 import com.namgs.smstoexcel.viewmodel.ShardViewModel
 import com.namgs.smstoexcel.vo.SMS
 import com.namgs.smstoexcel.vo.SmsDataList_1
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
@@ -63,14 +75,6 @@ class MainFragment : Fragment() {
     ): View {
         binding = FragmentMainBinding.inflate(inflater, container, false)
         activity = context as Activity
-        return binding!!.root
-
-
-    }
-
-    @SuppressLint("UseRequireInsteadOfGet")
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
         binding?.apply {
             lifecycleOwner = viewLifecycleOwner
@@ -78,12 +82,46 @@ class MainFragment : Fragment() {
             mainFragment = this@MainFragment
         }
 
+        return binding!!.root
+
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(checkPermissions()) {
+            shviewModel.loadSmsMessages(
+                loadsms(activity),
+                startDate,
+                calendar.getTimeInMillis(),
+                messagetype
+            )  //기본적인 리스트
+        }
+
+    }
+
+    private fun checkPermissions(): Boolean {
+        return arrPermission.all {
+            ContextCompat.checkSelfPermission(requireContext(), it) == PackageManager.PERMISSION_GRANTED
+        }
+    }
+    @SuppressLint("UseRequireInsteadOfGet")
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+
+
         startDate =Utill().convertToMillis(year,month+1,1)
         endDate =Utill().convertToMillis(year,month+1,day)
 
-
-        shviewModel.loadSmsMessages(loadsms(activity),startDate, calendar.getTimeInMillis(),messagetype)  //기본적인 리스트
-
+        if(checkPermissions()) {
+            shviewModel.loadSmsMessages(
+                loadsms(activity),
+                startDate,
+                calendar.getTimeInMillis(),
+                messagetype
+            )  //기본적인 리스트
+        }
 
 
 
@@ -175,13 +213,18 @@ class MainFragment : Fragment() {
 
 
     fun saveSelectedSmsToExcel() {
-        val workbook = XSSFWorkbook()
-        val timestamp = SimpleDateFormat("yyMMddHHmmss", Locale.getDefault()).format(Date())
-        val fileName = "sms_$timestamp.xlsx"
-        val sheet = workbook.createSheet("$timestamp SMS")
 
 
-        Toast.makeText(activity, "저장을 시작 합니다. 잠시만 기달리세요.", Toast.LENGTH_SHORT).show()
+        if(selectedSMS.size>0){
+            Toast.makeText(activity, "저장을 시작 합니다. 잠시만 기달리세요.", Toast.LENGTH_SHORT).show()
+            CoroutineScope(Dispatchers.IO + SupervisorJob()).launch {
+        //    Utill().setSnackbar(requireView(),"저장을 시작 합니다. 잠시만 기달리세요.","확인")
+            val workbook = XSSFWorkbook()
+            val timestamp = SimpleDateFormat("yyMMddHHmmss", Locale.getDefault()).format(Date())
+            val fileName = "sms_$timestamp.xlsx"
+            val sheet = workbook.createSheet("$timestamp SMS")
+
+
 
         val header = sheet.createRow(0)
         header.createCell(1).setCellValue("날짜")
@@ -205,13 +248,19 @@ class MainFragment : Fragment() {
         FileOutputStream(filePath).use { fileOut ->
             workbook.write(fileOut)
         }
-
-
         workbook.close()
-        Toast.makeText(activity, "엑셀 저장 완료 저장 위치는 Documents, 파일명은 ${fileName}", Toast.LENGTH_SHORT).show()
+        Utill().setSnackbar(requireView(),"엑셀 저장 완료 저장 위치는 Documents, 파일명은 ${fileName}","확인")
+     //   Toast.makeText(activity, "엑셀 저장 완료 저장 위치는 Documents, 파일명은 ${fileName}", Toast.LENGTH_SHORT).show()
+            }
+
+        }else{
+            Utill().setSnackbar(requireView(),"선택된 메시지 수가 ${selectedSMS.size}개 입니다.","확인")
+        }
+
     }
 
 }
+
 
 
 

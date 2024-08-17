@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.FrameLayout
 import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.core.app.ActivityCompat.startActivity
+import androidx.fragment.app.FragmentActivity
 import com.google.android.material.snackbar.Snackbar
 import com.namgs.smstoexcel.MainActivity
 import java.text.ParseException
@@ -17,9 +18,8 @@ import java.time.format.DateTimeFormatter
 import java.util.Calendar
 
 class Utill {
-
     fun setSnackbar(view : View, message : String,activity: MainActivity ){
-        var snack = Snackbar.make(view,message,Snackbar.LENGTH_LONG)
+        var snack = Snackbar.make(view,message,Snackbar.LENGTH_INDEFINITE)
             .apply { this.anchorView = anchorView }
         snack.setAction("App 종료!", View.OnClickListener {
             snack.dismiss()
@@ -31,7 +31,30 @@ class Utill {
         snack.show()
     }
 
+    fun setSnackbar(view : View, message : String,button: String,activity: FragmentActivity ){
+        var snack = Snackbar.make(view,message,Snackbar.LENGTH_LONG)
+            .apply { this.anchorView = anchorView }
+        snack.setAction(button, View.OnClickListener {
+            snack.dismiss()
+            finishAffinity(activity)
+        })
+        var layoutParam = snack.view.layoutParams as FrameLayout.LayoutParams
 
+        snack.view.layoutParams = layoutParam
+        snack.show()
+    }
+    fun setSnackbar(view : View, message : String,button: String){
+        var snack = Snackbar.make(view,message,Snackbar.LENGTH_INDEFINITE)
+            .apply { this.anchorView = anchorView }
+        snack.setAction(button, View.OnClickListener {
+            snack.dismiss()
+
+        })
+        var layoutParam = snack.view.layoutParams as FrameLayout.LayoutParams
+
+        snack.view.layoutParams = layoutParam
+        snack.show()
+    }
 
     fun mill2Time( date : Long) : LocalDateTime{
         return  Instant.ofEpochMilli(date).atZone(ZoneId.systemDefault()).toLocalDateTime()
