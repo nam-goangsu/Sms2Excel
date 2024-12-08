@@ -83,9 +83,12 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         }
 
     private fun startFragment() {
+
          navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+
         navController = navHostFragment.navController // 네비게이션 컨트롤러
+
         appBarConfiguration = AppBarConfiguration(navController.graph)// 뒤로가기 버튼 선택시 이전 프래그먼트 이동
     }
 

@@ -17,14 +17,12 @@ class loadsms(private val context: Context) {
         smsList.clear()
         list.clear()
 
-
-        smsList.clear()
-        val projection = arrayOf(
+/*        val projection = arrayOf(
             Telephony.Sms._ID,
             Telephony.Sms.ADDRESS,
             Telephony.Sms.BODY,
             Telephony.Sms.TYPE
-        )
+        )*/
         val cursor: Cursor? = // sms 정보를 가져옴
             context.contentResolver.query(
                 Telephony.Sms.CONTENT_URI,

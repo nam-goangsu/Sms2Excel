@@ -9,6 +9,9 @@ import com.namgs.smstoexcel.data.loadsms
 import com.namgs.smstoexcel.vo.SmsDataList_1
 import com.namgs.smstoexcel.vo.SmsDataLong
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -19,41 +22,50 @@ class ShardViewModel: ViewModel() {
 
 
 
-     private val _stMessageint = MutableLiveData<Int>()
-     val stMessageint: LiveData<Int>  = _stMessageint
+//     private val _stMessageint = MutableLiveData<Int>()
+//     val stMessageint: LiveData<Int>  = _stMessageint
+
+     private val _stMessageint = MutableStateFlow<Int>(0)
+     val stMessageint: StateFlow<Int>  = _stMessageint.asStateFlow()
 
      fun setMessageType(radio : Int){
           _stMessageint.value = radio
      }
 
-
-
-
-     private var _defaltdata = MutableLiveData<List<SmsDataList_1>>()
-     val defaltdata : LiveData<List<SmsDataList_1>> = _defaltdata
+//     private var _defaltdata = MutableLiveData<List<SmsDataList_1>>()
+//     val defaltdata : LiveData<List<SmsDataList_1>> = _defaltdata
+     private var _defaltdata = MutableStateFlow<List<SmsDataList_1>>(emptyList())
+     val defaltdata : StateFlow<List<SmsDataList_1>> = _defaltdata.asStateFlow()
 
 
 
      fun loadSmsMessages(loadsms: loadsms,stdate : Long , eddate :Long ,type : Int) {
           viewModelScope.launch(Dispatchers.IO) {
                val messages = loadsms.getloadSms(stdate,eddate,type)
-               _defaltdata.postValue(messages)
+//               _defaltdata.postValue(messages)
+               _defaltdata.value = messages
           }
      }
 
 
 
-     private val _selectedDate = MutableLiveData<String>()
-     val selectedDate: LiveData<String> = _selectedDate
+//     private val _selectedDate = MutableLiveData<String>()
+//     val selectedDate: LiveData<String> = _selectedDate
+//
+//     private val _stDate = MutableLiveData<String>()
+//     val stDate: LiveData<String>  = _stDate
 
-     private val _stDate = MutableLiveData<String>()
-     val stDate: LiveData<String>  = _stDate
+     private val _selectedDate = MutableStateFlow("")
+     val selectedDate: StateFlow<String> = _selectedDate.asStateFlow()
+
+     private val _stDate = MutableStateFlow("")
+     val stDate: StateFlow<String> = _stDate.asStateFlow()
+
 
      init {
           // ViewModel 초기화 시 오늘 날짜로 설정
           val today = Calendar.getInstance()
           setDate(today.get(Calendar.YEAR), today.get(Calendar.MONTH), 1)
-
           setDate1(today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH))
      }
 

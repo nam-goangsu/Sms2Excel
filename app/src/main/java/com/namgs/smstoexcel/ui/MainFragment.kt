@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.namgs.Utill
 import com.namgs.smstoexcel.Adapter.Mainadapter
@@ -109,8 +110,6 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-
         startDate =Utill().convertToMillis(year,month+1,1)
         endDate =Utill().convertToMillis(year,month+1,day)
 
@@ -124,30 +123,51 @@ class MainFragment : Fragment() {
         }
 
 
+//livedata => flow 20241319
+//        shviewModel.defaltdata.observe(viewLifecycleOwner, Observer { messages  -> // 리스트
+//            binding!!.recyclerViewSMS.layoutManager = LinearLayoutManager(activity)
+//            adapter  = Mainadapter(messages,selectedSMS )
+//            binding!!.recyclerViewSMS.adapter = adapter
+//            adapter .notifyDataSetChanged()
+//            Log.d("test","size ${messages .size}")
+//        })
+//        shviewModel.stDate.observe(viewLifecycleOwner, Observer { date ->   // 시작일
+//          //  binding!!.stdayTextview.text = date
+//            startDate = dateFormat.parse(date)?.time ?: 0L
+//        })
+//        shviewModel.selectedDate.observe(viewLifecycleOwner, Observer { date -> /// 종료일
+//            binding!!.eddayTextview.text = date
+//            endDate = dateFormat.parse(date)?.time ?: 0L
+//        })
+//        shviewModel.stMessageint.observe(viewLifecycleOwner,Observer{date ->  // 문자 발신 여부 타입 0전체 1수신 2 발신
+//            messagetype = date
+//        })
+        viewLifecycleOwner.lifecycleScope.launch {
+            shviewModel.defaltdata.collect { messages ->
+                binding!!.recyclerViewSMS.layoutManager = LinearLayoutManager(activity)
+                adapter = Mainadapter(messages, selectedSMS)
+                binding!!.recyclerViewSMS.adapter = adapter
+                adapter.notifyDataSetChanged()
+            }
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            shviewModel.stDate.collect { date ->
+                startDate = dateFormat.parse(date)?.time ?: 0L
+            }
+        }
 
-        shviewModel.defaltdata.observe(viewLifecycleOwner, Observer { messages  -> // 리스트
-            binding!!.recyclerViewSMS.layoutManager = LinearLayoutManager(activity)
+        viewLifecycleOwner.lifecycleScope.launch {
+            shviewModel.selectedDate.collect { date ->
+                binding!!.eddayTextview.text = date
+                endDate = dateFormat.parse(date)?.time ?: 0L
+            }
+        }
 
-
-            adapter  = Mainadapter(messages,selectedSMS )
-            binding!!.recyclerViewSMS.adapter = adapter
-            adapter .notifyDataSetChanged()
-            Log.d("test","size ${messages .size}")
-        })
-
-
-        shviewModel.stDate.observe(viewLifecycleOwner, Observer { date ->   // 시작일
-          //  binding!!.stdayTextview.text = date
-            startDate = dateFormat.parse(date)?.time ?: 0L
-        })
-        shviewModel.selectedDate.observe(viewLifecycleOwner, Observer { date -> /// 종료일
-            binding!!.eddayTextview.text = date
-            endDate = dateFormat.parse(date)?.time ?: 0L
-        })
-        shviewModel.stMessageint.observe(viewLifecycleOwner,Observer{date ->  // 문자 발신 여부 타입 0전체 1수신 2 발신
-            messagetype = date
-
-        })
+        viewLifecycleOwner.lifecycleScope.launch {
+            shviewModel.stMessageint.collect { type ->
+                messagetype = type
+            }
+        }
 
 
      //   binding!!.stview.setOnClickListener(this)
@@ -217,7 +237,7 @@ class MainFragment : Fragment() {
 
         if(selectedSMS.size>0){
             Toast.makeText(activity, "저장을 시작 합니다. 잠시만 기달리세요.", Toast.LENGTH_SHORT).show()
-            CoroutineScope(Dispatchers.IO + SupervisorJob()).launch {
+            CoroutineScope(Dispatchers.IO + SupervisorJob()).launch {   //supervisorScope
         //    Utill().setSnackbar(requireView(),"저장을 시작 합니다. 잠시만 기달리세요.","확인")
             val workbook = XSSFWorkbook()
             val timestamp = SimpleDateFormat("yyMMddHHmmss", Locale.getDefault()).format(Date())
